@@ -1,5 +1,5 @@
 import React from 'react';
-import CartDisplay from '@/components/CartDisplay';
+import CartDisplay from '@/presentation/components/CartDisplay';
 import Link from 'next/link';
 
 const Navbar = () => {

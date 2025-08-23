@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import { Product } from '../lib/graphql';
+  import { Product } from '@/types/product';
 
 interface CartItem extends Product {
   quantity: number;

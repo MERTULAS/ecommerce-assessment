@@ -3,9 +3,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { CartProvider } from '../components/CartContext';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import { CartProvider } from '@/presentation/components/CartContext';
+import Navbar from '@/presentation/components/layout/Navbar';
+import Footer from '@/presentation/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
