@@ -1,9 +1,12 @@
-export interface Product {
-    id: any;
-    name: any;
-    price: any;
-    description: any;
-    imageUrl: any;
+export interface ProductDetail {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+};
+
+export interface Product extends ProductDetail {
+    imageUrl: string;
     sku?: string;
     inventory?: number;
     manufacturer?: string;
