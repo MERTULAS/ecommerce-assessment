@@ -1,9 +1,7 @@
-// components/CartDisplay.tsx
-
 'use client';
 
 import React, { useState } from 'react';
-import { useCart } from './CartContext';
+import { useCart } from '@/context/CartContext';
 
 export default function CartDisplay() {
   const { cartItems, cartItemCount, totalPrice, removeFromCart, clearCart } =
@@ -38,7 +36,7 @@ export default function CartDisplay() {
       </button>
 
       {isOpen && (
-        <div className='absolute right-0 mt-2' style={{ width: '400px' }}>
+        <div className='absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg'>
           <div className='p-4'>
             <div className='flex justify-between items-center mb-4'>
               <h3 className='text-lg font-semibold text-gray-900'>
@@ -137,4 +135,4 @@ export default function CartDisplay() {
       )}
     </div>
   );
-}
+};

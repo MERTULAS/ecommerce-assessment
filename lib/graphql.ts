@@ -1,21 +1,4 @@
-export interface Product {
-  id: any;
-  name: any;
-  price: any;
-  description: any;
-  imageUrl: any;
-  sku?: string;
-  inventory?: number;
-  manufacturer?: string;
-  weight?: number;
-  dimensions?: {
-    width: number;
-    height: number;
-    depth: number;
-  };
-  tags?: string[];
-  reviews?: any[];
-}
+import { Product } from '@/types/product';
 
 const mockProducts: Product[] = [
   {
@@ -74,20 +57,54 @@ const mockProducts: Product[] = [
   },
 ];
 
-export async function fetchProducts(): Promise<any> {
+interface ProductsApiResponse {
+  data?: { products: Product[] };
+  error?: {
+    message: string;
+    status: number;
+  };
+}
+
+export async function fetchProducts(): Promise<ProductsApiResponse> {
   return new Promise((resolve) => {
+    // Simulate random delay (200ms - 1000ms) for more realistic API behavior
+    const delay = Math.random() * 800 + 200;
+
     setTimeout(() => {
-      const productsWithExtraData = mockProducts.map((p) => ({
-        ...p,
-        sku: `SKU-${p.id}`,
-        inventory: Math.floor(Math.random() * 100),
-        manufacturer: 'Generic Brand',
-        weight: Math.random() * 5,
-        dimensions: { width: 10, height: 10, depth: 10 },
-        tags: ['tag1', 'tag2', 'tag3'],
-        reviews: [],
-      }));
-      resolve({ data: { products: productsWithExtraData } });
-    }, 500);
+      // Simulate 5% chance of API failure for testing error handling
+      if (Math.random() < 0.05) {
+        resolve({
+          error: {
+            message: 'Failed to fetch products. Please try again later.',
+            status: 500
+          }
+        });
+        return;
+      }
+
+      try {
+        const productsWithExtraData = mockProducts.map((p) => ({
+          ...p,
+          sku: `SKU-${p.id}`,
+          inventory: Math.floor(Math.random() * 100),
+          manufacturer: 'Generic Brand',
+          weight: Math.random() * 5,
+          dimensions: { width: 10, height: 10, depth: 10 },
+          tags: ['tag1', 'tag2', 'tag3'],
+          reviews: [],
+        }));
+
+        resolve({ 
+          data: { products: productsWithExtraData }
+        });
+      } catch (error) {
+        resolve({
+          error: {
+            message: 'Error processing product data',
+            status: 500
+          }
+        });
+      }
+    }, delay);
   });
 }

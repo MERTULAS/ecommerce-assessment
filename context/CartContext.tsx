@@ -5,9 +5,11 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useMemo,
+  useCallback,
   ReactNode,
 } from 'react';
-import { Product } from '../lib/graphql';
+import { Product } from '@/types/product';
 
 interface CartItem extends Product {
   quantity: number;
@@ -26,9 +28,8 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [cartTotal, setCartTotal] = useState(0);
 
-  const addToCart = (product: Product) => {
+  const addToCart = useCallback((product: Product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
       if (existingItem) {
@@ -41,47 +42,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = useCallback((productId: string) => {
     setCartItems((prevItems) =>
       prevItems.filter((item) => item.id !== productId)
     );
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
-  useEffect(() => {
-    const total = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    setCartTotal(total);
   }, []);
 
-  // Recalculating on every render
-  const cartItemCount = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+  }, []);
+
+  // Optimized calculations with useMemo - only recalculates when cartItems change
+  const cartItemCount = useMemo(() => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  }, [cartItems]);
+
+  const totalPrice = useMemo(() => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }, [cartItems]);
+
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({
+    cartItems,
+    cartItemCount,
+    totalPrice,
+    addToCart,
+    removeFromCart,
+    clearCart,
+  }), [cartItems, cartItemCount, totalPrice, addToCart, removeFromCart, clearCart]);
 
   return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        cartItemCount,
-        totalPrice,
-        addToCart,
-        removeFromCart,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );
@@ -93,4 +86,4 @@ export function useCart() {
     throw new Error('useCart must be used within a CartProvider');
   }
   return context;
-}
+};
