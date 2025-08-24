@@ -1,7 +1,7 @@
 'use client';
 
 import { Product } from '@/types/product';
-import { useCart } from '@/presentation/components/CartContext';
+import { useCart } from '@/context/CartContext';
 import React from 'react';
 
 interface AddToCartButtonProps {

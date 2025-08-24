@@ -1,9 +1,7 @@
-// app/layout.tsx
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { CartProvider } from '@/presentation/components/CartContext';
+import { CartProvider } from '@/context/CartContext';
 import Navbar from '@/presentation/components/Layout/Navbar';
 import Footer from '@/presentation/components/Layout/Footer';
 
