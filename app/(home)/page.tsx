@@ -1,6 +1,6 @@
-import HeroSection from '@/presentation/pages/home/items/HeroSection';
-import FeaturesSection from '@/presentation/pages/home/items/FeaturesSection';
-import ProductList from '@/presentation/pages/home/items/ProductList';
+import HeroSection from '@/presentation/pages/Home/items/HeroSection';
+import FeaturesSection from '@/presentation/pages/Home/items/FeaturesSection';
+import ProductList from '@/presentation/pages/Home/items/ProductList';
 import { fetchProducts } from '@/lib/graphql';
 import { Product } from '@/types/product';
 

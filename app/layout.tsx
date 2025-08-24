@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/presentation/components/CartContext';
-import Navbar from '@/presentation/components/layout/Navbar';
-import Footer from '@/presentation/components/layout/Footer';
+import Navbar from '@/presentation/components/Layout/Navbar';
+import Footer from '@/presentation/components/Layout/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,6 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang='en'>
       <body className={inter.className}>
