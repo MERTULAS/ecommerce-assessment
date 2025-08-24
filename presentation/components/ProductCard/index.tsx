@@ -3,12 +3,14 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Product } from '@/types/product';
 import AddToCartButton from './items/AddToCartButton';
+import Image from 'next/image';
 
 interface ProductCardProps {
     product: Product;
+    priority?: boolean; // For LCP optimization
 }
 
-const ProductCard = React.memo(({ product }: ProductCardProps) => {
+const ProductCard = React.memo(({ product, priority = false }: ProductCardProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const discountPercentage = useMemo(() => {
@@ -18,6 +20,10 @@ const ProductCard = React.memo(({ product }: ProductCardProps) => {
         }
         return Math.round(Math.random() * 20);
     }, [product.id]);
+
+    const newPrice = useMemo(() => {
+        return product.price * (1 - discountPercentage / 100);
+    }, [product.price, discountPercentage]);
 
     const handleMouseEnter = useCallback(() => setIsHovered(true), []);
     const handleMouseLeave = useCallback(() => setIsHovered(false), []);
@@ -33,18 +39,32 @@ const ProductCard = React.memo(({ product }: ProductCardProps) => {
             }}
         >
             <div className='relative overflow-hidden'>
-                <img
+                <Image
+                    width={400}
+                    height={300}
+                    alt={product.name}
                     src={product.imageUrl}
                     className='product-image w-full h-48 object-cover'
+                    priority={priority}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
-                <div className='absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full'>
-                    <span className='text-lg font-bold text-green-600'>
-                        ${product.price.toFixed(2)}
-                    </span>
-                    {discountPercentage > 0 && (
-                        <div className='text-xs text-red-500 mt-1'>
-                            {discountPercentage}% off
+                <div className='absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm'>
+                    {discountPercentage > 0 ? (
+                        <div className='flex flex-col items-end space-y-1'>
+                            <span className='text-sm text-gray-500 line-through'>
+                                ${product.price.toFixed(2)}
+                            </span>
+                            <span className='text-lg font-bold text-green-600'>
+                                ${newPrice.toFixed(2)}
+                            </span>
+                            <div className='bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full'>
+                                {discountPercentage}% OFF
+                            </div>
                         </div>
+                    ) : (
+                        <span className='text-lg font-bold text-gray-900'>
+                            ${product.price.toFixed(2)}
+                        </span>
                     )}
                 </div>
             </div>
@@ -58,7 +78,7 @@ const ProductCard = React.memo(({ product }: ProductCardProps) => {
                 </p>
 
                 <div className='mt-auto'>
-                    <AddToCartButton product={product} />
+                    <AddToCartButton product={{ ...product, price: newPrice }} />
                 </div>
             </div>
         </div>
