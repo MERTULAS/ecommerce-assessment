@@ -4,6 +4,62 @@
 
 ### 1. Layout Structure Refactoring ✅
 
+```
+.
+├── README.md
+├── package.json
+├── package-lock.json
+├── pnpm-lock.yaml
+├── tsconfig.json
+├── tailwind.config.ts
+├── postcss.config.js
+├── next.config.js
+├── next-env.d.ts
+├── app/
+│   ├── (home)/
+│   │   └── page.tsx
+│   ├── product/
+│   │   └── [id]/
+│   │       └── page.tsx
+│   ├── search/
+│   │   └── page.tsx
+│   ├── layout.tsx
+│   ├── loading.tsx
+│   ├── not-found.tsx
+│   └── globals.css
+├── lib/
+│   └── graphql.ts
+├── types/
+│   └── product.ts
+├── context/
+│   └── CartContext.tsx
+└── presentation/
+    ├── components/
+    │   ├── Cart/
+    │   │   └── CartDisplay.tsx
+    │   ├── layout/
+    │   │   ├── Navbar/
+    │   │   │   └── index.tsx
+    │   │   └── Footer/
+    │   │       └── index.tsx
+    │   └── ProductCard/
+    │       ├── index.tsx
+    │       └── items/
+    │           └── AddToCartButton.tsx
+    └── pages/
+        ├── Home/
+        │   └── items/
+        │       ├── HeroSection.tsx
+        │       ├── FeaturesSection.tsx
+        │       ├── ProductList.tsx
+        │       └── ReloadPageCTA.tsx
+        ├── ProductDetail/
+        │   └── index.tsx
+        └── Search/
+            └── items/
+                └── CommentsContent.tsx
+```
+
 **Changes made:**
 - Moved layout components to separate folders to reduce clutter in `app/layout.tsx`
 - Created `/components/layout/` directory
