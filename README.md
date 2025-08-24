@@ -209,6 +209,8 @@ In typical e-commerce applications, cart contents should persist across page ref
 
 Since discount percentages are calculated dynamically on each render, storing cart items in localStorage could lead to price inconsistencies when the page is refreshed (as discount values might change). This creates a mismatch between the stored price and the newly calculated discounted price.
 
+Additionally, when users perform search operations in the product list, ProductCard components are re-rendered and discounts are recalculated, which also causes price inconsistencies with items already in the cart. However, when the recommended solutions are implemented in real-world applications, these issues are prevented.
+
 **Recommendation:** localStorage-based cart persistence is more suitable for scenarios where:
 - Product prices are static and fetched from backend
 - Discount prices are fixed and provided by the server

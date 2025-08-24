@@ -9,9 +9,12 @@ const nextConfig = {
   // Image optimization settings
   images: {
     // External image domains for product images
-    domains: ['images.unsplash.com'],
-    // Image formats for better performance
-    formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
 
   // Performance optimizations
